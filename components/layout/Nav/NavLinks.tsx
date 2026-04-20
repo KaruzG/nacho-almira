@@ -18,24 +18,28 @@ const NavLinks = () => {
     ]
 
     const renderNavLinks = () => {
-        return navLinks.map((link) => (
-            <li key={link.href}>
-                <Link 
-                    href={link.href} 
-                    className={`text-[14px] transition-colors ${
-                        pathname === link.href 
-                            ? navLinksStyles.active 
-                            : navLinksStyles.inactive
-                    }`}
-                >
-                    {link.label}
-                </Link>
-            </li>
-        ))
+        return navLinks.map((link) => {
+            const isActive = pathname === link.href;
+            
+            return (
+                <li key={link.href} className={isActive ? "hidden md:block" : ""}>
+                    <Link 
+                        href={link.href} 
+                        className={`text-[14px] transition-colors ${
+                            isActive 
+                                ? navLinksStyles.active 
+                                : navLinksStyles.inactive
+                        }`}
+                    >
+                        {link.label}
+                    </Link>
+                </li>
+            )
+        })
     }
 
   return (
-    <ul className="flex gap-12">
+    <ul className="flex gap-6 md:gap-12">
         {renderNavLinks()}
     </ul>
   )

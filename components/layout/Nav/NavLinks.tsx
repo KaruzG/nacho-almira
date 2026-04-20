@@ -14,7 +14,7 @@ const NavLinks = () => {
 
     const navLinks = [
         { href: "/", label: "PROJECTS" },
-        { href: "/about", label: "ABOUT" },
+        { href: "/contact", label: "CONTACT" },
     ]
 
     const renderNavLinks = () => {

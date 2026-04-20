@@ -27,7 +27,7 @@ const NavLinks = () => {
     }
 
     return (
-        <ul className="flex gap-12">
+        <ul className="flex gap-6 md:gap-12">
             {renderNavLinks()}
         </ul>
     )

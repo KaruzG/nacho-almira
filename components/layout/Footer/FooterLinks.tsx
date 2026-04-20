@@ -5,12 +5,12 @@ import Link from "next/link";
 const NavLinks = () => {
 
     const navLinksStyles = {
-        base: "text-[14px] transition-colors"
+        base: "text-[14px] transition-colors hover:text-secondary"
     }
 
     const navLinks = [
         { href: "/", label: "INSTAGRAM" },
-        { href: "/about", label: "CONTACT" },
+        { href: "/contact", label: "CONTACT" },
     ]
 
     const renderNavLinks = () => {

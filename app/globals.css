@@ -2,15 +2,17 @@
 
 :root {
     --color-primary: #131313;
+    --color-primary-light: #272727;
     --color-secondary: #E5E2E1;
+    --color-secondary-dark: #838181;
     --color-accent: #F3BF26;
     --color-accent-light: #F3BF26;
     --color-accent-dark: rgba(243, 191, 38, 0.55);
 
     --bg-primary: #131313;
     --bg-secondary: #1a1a1a;
-    
-    --font-primary: 'Inter', sans-serif;    
+
+    --font-primary: 'Inter', sans-serif;
 }
 
 @theme {
@@ -22,7 +24,7 @@
 
     --bg-primary: var(--bg-primary);
     --bg-secondary: var(--bg-secondary);
-    
+
     --font-family: var(--font-primary);
 }
 

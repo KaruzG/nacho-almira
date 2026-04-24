@@ -7,8 +7,8 @@ const NavLinks = () => {
     const pathname = usePathname()
 
     const navLinksStyles = {
-        base: "text-[14px] transition-colors",
-        active: "text-accent underline underline-offset-4 decoration-2",
+        base: "text-[14px] transition-all duration-800 font-bold tracking-wider",
+        active: "text-accent underline underline-offset-5 decoration-2",
         inactive: "text-secondary hover:text-accent"
     }
 
@@ -25,7 +25,7 @@ const NavLinks = () => {
                 <li key={link.href} className={isActive ? "hidden md:block" : ""}>
                     <Link 
                         href={link.href} 
-                        className={`text-[14px] transition-colors ${
+                        className={`${navLinksStyles.base} ${
                             isActive 
                                 ? navLinksStyles.active 
                                 : navLinksStyles.inactive

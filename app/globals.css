@@ -2,7 +2,7 @@
 
 :root {
     --color-primary: #131313;
-    --color-primary-light: #272727;
+    --color-primary-light: #181818;
     --color-secondary: #E5E2E1;
     --color-secondary-dark: #838181;
     --color-accent: #F3BF26;
@@ -16,6 +16,7 @@
 
 @theme {
     --color-primary: var(--color-primary);
+    --color-primary-light: var(--color-primary-light);
     --color-secondary: var(--color-secondary);
     --color-secondary-dark: var(--color-secondary-dark);
     --color-accent: var(--color-accent);

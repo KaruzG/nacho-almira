@@ -31,7 +31,7 @@ const projectsMock: Project[] = [
 
 const Projects = () => {
   return (
-    <section id="projects" className="w-full py-24 px-4 md:px-8 flex flex-col items-center bg-white dark:bg-zinc-950">
+    <section id="projects" className="w-full py-24 px-4 md:px-8 flex flex-col items-center bg-primary-light ">
       <div className="w-full max-w-[1400px]">
         <Title className="mb-12">PROJECTS</Title>
         <ProjectsGrid projects={projectsMock} />

@@ -13,7 +13,7 @@ const NavLinks = () => {
     }
 
     const navLinks = [
-        { href: "/", label: "PROJECTS" },
+        { href: "/projects", label: "PROJECTS" },
         { href: "/contact", label: "CONTACT" },
     ]
 

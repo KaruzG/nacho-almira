@@ -7,6 +7,7 @@ export interface Project {
   title: string;
   tag: string;
   videoUrl: string;
+  type?: "Personal" | "Commissioned";
 }
 
 interface ProjectsGridProps {

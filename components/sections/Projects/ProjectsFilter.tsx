@@ -7,7 +7,7 @@ interface ProjectsFilterProps {
 
 export default function ProjectsFilter({ activeFilter, setActiveFilter }: ProjectsFilterProps) {
   const filterStyles = {
-    base: "text-[14px] transition-all duration-800 font-bold tracking-wider uppercase hover:cursor-pointer",
+    base: "text-[14px] transition-all duration-200 font-bold tracking-wider uppercase hover:cursor-pointer",
     active: "text-accent underline underline-offset-5 decoration-2",
     inactive: "text-[#8F721E] hover:text-accent"
   };

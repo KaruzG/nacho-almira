@@ -34,7 +34,7 @@ export default function ProjectsGrid({ projects }: ProjectsGridProps) {
             }}
           >
             <ProjectsTrailer videoUrl={project.videoUrl} />
-            <ProjectsSubtitle title={project.title} tag={project.tag} />
+            <ProjectsSubtitle title={project.title} tag={`${project.type} / ${project.tag}`} />
           </motion.div>
         </Suspense>
       ))}

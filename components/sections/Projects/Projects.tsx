@@ -10,7 +10,7 @@ const projectsMock: Project[] = [
   {
     id: 1,
     title: "caos - locked in",
-    tag: "Personal / video clip",
+    tag: "video clip",
     videoUrl: "https://res.cloudinary.com/dmfyvtezz/video/upload/v1776817190/videoHero_k654bx.mp4",
     type: "Personal"
   },

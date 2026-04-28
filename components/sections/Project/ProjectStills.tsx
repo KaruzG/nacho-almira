@@ -6,7 +6,7 @@ interface ProjectStillsProps {
 }
 
 export default function ProjectStills({ stills }: ProjectStillsProps) {
-  const containerStyles = "grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4";
+  const containerStyles = "grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 md:grid-flow-row-dense auto-rows-[250px] md:auto-rows-[350px] lg:auto-rows-[450px]";
   const imageBaseStyles = "w-full h-full object-cover";
 
   return (
@@ -18,10 +18,10 @@ export default function ProjectStills({ stills }: ProjectStillsProps) {
         {stills.map((still, index) => (
           <div
             key={index}
-            className={`relative overflow-hidden ${
+            className={`relative overflow-hidden w-full h-full ${
               still.orientation === "horizontal"
-                ? "md:col-span-2 aspect-video"
-                : "aspect-square"
+                ? "md:col-span-2"
+                : "md:col-span-1"
             }`}
           >
             <Image

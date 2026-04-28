@@ -2,7 +2,7 @@
 
 import Button from "@/components/ui/Button";
 import { GoArrowRight } from "react-icons/go";
-
+import { motion } from "motion/react";
 
 interface ProjectDescriptionProps {
   shortDescription: string;
@@ -13,22 +13,44 @@ interface ProjectDescriptionProps {
 export default function ProjectDescription({ shortDescription, description, mediaLink }: ProjectDescriptionProps) {
   const shortDescriptionStyles = "text-xl md:text-2xl font-light text-secondary mb-4";
   const descriptionStyles = "text-md md:text-lg max-w-[700px] text-secondary-dark leading-relaxed mb-8";
-  const linkStyles = "inline-block text-[14px] font-bold tracking-wider uppercase text-accent border border-accent px-8 py-3 transition-all duration-200 hover:bg-accent hover:text-primary";
 
   return (
     <div className="flex flex-col">
-      <p className={shortDescriptionStyles}>{shortDescription}</p>
-      <p className={descriptionStyles}>{description}</p>
+      <motion.p 
+        className={shortDescriptionStyles}
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1.0] }}
+      >
+        {shortDescription}
+      </motion.p>
+      <motion.p 
+        className={descriptionStyles}
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, delay: 0.1, ease: [0.25, 0.1, 0.25, 1.0] }}
+      >
+        {description}
+      </motion.p>
       {mediaLink && (
-        <Button
-          label="Link to media"
-          variant="accent"
-          size="md"
-          className="mt-2 max-w-fit flex items-center gap-2"
-          onClick={() => window.open(mediaLink, "_blank")}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.2, ease: [0.25, 0.1, 0.25, 1.0] }}
         >
-          Link to media <GoArrowRight size={22} />
-        </Button>
+          <Button
+            label="Link to media"
+            variant="accent"
+            size="md"
+            className="mt-2 max-w-fit flex items-center gap-2"
+            onClick={() => window.open(mediaLink, "_blank")}
+          >
+            Link to media <GoArrowRight size={22} />
+          </Button>
+        </motion.div>
       )}
     </div>
   );

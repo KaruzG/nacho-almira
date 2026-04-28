@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import { ProjectStill } from "../Projects/ProjectsGrid";
+import { motion } from "motion/react";
 
 interface ProjectStillsProps {
   stills: ProjectStill[];
@@ -11,18 +14,28 @@ export default function ProjectStills({ stills }: ProjectStillsProps) {
 
   return (
     <div className="mt-16 md:mt-24">
-      <h3 className="text-sm font-bold uppercase tracking-wider text-secondary-dark mb-8">
+      <motion.h3 
+        className="text-sm font-bold uppercase tracking-wider text-secondary-dark mb-8"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1.0] }}
+      >
         Film Stills
-      </h3>
+      </motion.h3>
       <div className={containerStyles}>
         {stills.map((still, index) => (
-          <div
+          <motion.div
             key={index}
             className={`relative overflow-hidden w-full h-full ${
               still.orientation === "horizontal"
                 ? "md:col-span-2"
                 : "md:col-span-1"
             }`}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: index * 0.1, ease: [0.25, 0.1, 0.25, 1.0] }}
           >
             <Image
               src={still.src}
@@ -35,7 +48,7 @@ export default function ProjectStills({ stills }: ProjectStillsProps) {
               }
               className={imageBaseStyles}
             />
-          </div>
+          </motion.div>
         ))}
       </div>
     </div>

@@ -25,12 +25,11 @@ const ProjectSection = () => {
       { role: "Artist", name: "Caos" },
     ],
     stills: [
-      { src: "https://picsum.photos/seed/still1/1200/675", alt: "Wide shot of the performance", orientation: "horizontal" },
-      { src: "https://picsum.photos/seed/still2/600/600", alt: "Close up portrait", orientation: "square" },
-      { src: "https://picsum.photos/seed/still3/600/600", alt: "Detail shot", orientation: "square" },
-      { src: "https://picsum.photos/seed/still4/600/600", alt: "Behind the scenes", orientation: "square" },
-      { src: "https://picsum.photos/seed/still5/1200/675", alt: "Cinematic wide angle", orientation: "horizontal" },
-      { src: "https://picsum.photos/seed/still6/600/600", alt: "Silhouette shot", orientation: "square" },
+      { src: "https://res.cloudinary.com/dmfyvtezz/image/upload/v1777412194/Large_Feature_Still_xv0tae.png", alt: "Wide shot of the performance", orientation: "horizontal" },
+      { src: "https://res.cloudinary.com/dmfyvtezz/image/upload/v1777412194/Balanced_Bottom_Row_pnm6g6.png", alt: "Close up portrait", orientation: "square" },
+      { src: "https://res.cloudinary.com/dmfyvtezz/image/upload/v1777412194/Background_gaypta.png", alt: "Detail shot", orientation: "square" },
+      { src: "https://res.cloudinary.com/dmfyvtezz/image/upload/v1777412194/AB6AXU_1_b8mrj6.png", alt: "Behind the scenes", orientation: "square" },
+      { src: "https://res.cloudinary.com/dmfyvtezz/image/upload/v1777412194/Background-1_bcvk08.png", alt: "Cinematic wide angle", orientation: "square" },
     ],
   };
 

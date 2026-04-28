@@ -38,7 +38,7 @@ const ProjectSection = () => {
     <section className="w-full pt-12 pb-32 px-4 md:px-8 flex flex-col items-center bg-primary-light">
       <div className="container">
         <ProjectsTags tag={`${projectMock.type} / ${projectMock.tag}`} />
-        <Title className="uppercase mb-15">{projectMock.title}</Title>
+        <Title className="uppercase mb-10">{projectMock.title}</Title>
         <HeroVideo />
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mt-12 md:mt-16">

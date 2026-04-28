@@ -6,12 +6,28 @@ import ProjectsTrailer from "./ProjectsTrailer";
 import ProjectsSubtitle from "./ProjectsSubtitle";
 import ProjectSkeleton from "./ProjectSkeleton";
 
+export interface ProjectCredit {
+  role: string;
+  name: string;
+}
+
+export interface ProjectStill {
+  src: string;
+  alt: string;
+  orientation: "horizontal" | "square";
+}
+
 export interface Project {
   id: string | number;
   title: string;
   tag: string;
   videoUrl: string;
   type?: "Personal" | "Commissioned";
+  shortDescription?: string;
+  description?: string;
+  mediaLink?: string;
+  credits?: ProjectCredit[];
+  stills?: ProjectStill[];
 }
 
 interface ProjectsGridProps {

@@ -1,4 +1,8 @@
-import Link from "next/link";
+"use client"
+
+import Button from "@/components/ui/Button";
+import { GoArrowRight } from "react-icons/go";
+
 
 interface ProjectDescriptionProps {
   shortDescription: string;
@@ -7,8 +11,8 @@ interface ProjectDescriptionProps {
 }
 
 export default function ProjectDescription({ shortDescription, description, mediaLink }: ProjectDescriptionProps) {
-  const shortDescriptionStyles = "text-lg md:text-xl font-semibold text-secondary mb-4";
-  const descriptionStyles = "text-sm md:text-base text-secondary-dark leading-relaxed mb-8";
+  const shortDescriptionStyles = "text-xl md:text-2xl font-light text-secondary mb-4";
+  const descriptionStyles = "text-md md:text-lg max-w-[700px] text-secondary-dark leading-relaxed mb-8";
   const linkStyles = "inline-block text-[14px] font-bold tracking-wider uppercase text-accent border border-accent px-8 py-3 transition-all duration-200 hover:bg-accent hover:text-primary";
 
   return (
@@ -16,14 +20,15 @@ export default function ProjectDescription({ shortDescription, description, medi
       <p className={shortDescriptionStyles}>{shortDescription}</p>
       <p className={descriptionStyles}>{description}</p>
       {mediaLink && (
-        <Link
-          href={mediaLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={linkStyles}
+        <Button
+          label="Link to media"
+          variant="accent"
+          size="md"
+          className="mt-2 max-w-fit flex items-center gap-2"
+          onClick={() => window.open(mediaLink, "_blank")}
         >
-          Link to media
-        </Link>
+          Link to media <GoArrowRight size={22} />
+        </Button>
       )}
     </div>
   );

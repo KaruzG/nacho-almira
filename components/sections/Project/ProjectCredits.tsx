@@ -5,8 +5,8 @@ interface ProjectCreditsProps {
 }
 
 export default function ProjectCredits({ credits }: ProjectCreditsProps) {
-  const roleStyles = "text-sm uppercase tracking-[0.15em] text-secondary-dark mb-1";
-  const nameStyles = "text-md font-semibold text-secondary";
+  const roleStyles = "text-sm uppercase tracking-[0.15em] text-secondary-dark justify-start";
+  const nameStyles = "text-md font-semibold text-secondary text-right";
   const titleStyles = "text-lg font-bold uppercase tracking-wider text-secondary pb-3 border-b border-secondary/20"
 
   return (
@@ -15,7 +15,7 @@ export default function ProjectCredits({ credits }: ProjectCreditsProps) {
         Project Credits
       </h3>
       {credits.map((credit, index) => (
-        <div key={index} className="flex flex-row justify-between uppercase">
+        <div key={index} className="flex flex-row justify-between items-center uppercase">
           <span className={roleStyles}>{credit.role}</span>
           <span className={nameStyles}>{credit.name}</span>
         </div>

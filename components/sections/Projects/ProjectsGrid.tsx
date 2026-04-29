@@ -6,6 +6,7 @@ import ProjectsTrailer from "./ProjectsTrailer";
 import ProjectsSubtitle from "./ProjectsSubtitle";
 import ProjectSkeleton from "./ProjectSkeleton";
 import Link from "next/link";
+import { FilterType } from "./ProjectsFilter";
 
 export interface ProjectCredit {
   role: string;
@@ -22,7 +23,7 @@ export interface Project {
   title: string;
   tag: string;
   videoUrl: string;
-  type?: "Personal" | "Commissioned";
+  type?: FilterType | string;
   shortDescription?: string;
   description?: string;
   mediaLink?: string;

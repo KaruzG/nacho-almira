@@ -19,7 +19,7 @@ const projectsMock: Project[] = [
     title: "Project Beta",
     tag: "Art Direction",
     videoUrl: "https://res.cloudinary.com/dmfyvtezz/video/upload/v1776817190/videoHero_k654bx.mp4",
-    type: "Commissioned"
+    type: "Ad-Film"
   },
   {
     id: 3,
@@ -33,7 +33,7 @@ const projectsMock: Project[] = [
     title: "Project Delta",
     tag: "Web Experience",
     videoUrl: "https://res.cloudinary.com/dmfyvtezz/video/upload/v1776817190/videoHero_k654bx.mp4",
-    type: "Commissioned"
+    type: "Ad-Film"
   }
 ];
 

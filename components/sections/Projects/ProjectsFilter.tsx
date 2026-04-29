@@ -1,4 +1,4 @@
-export type FilterType = "All projects" | "Personal" | "Commissioned";
+export type FilterType = "All projects" | "Personal" | "Ad-Film";
 
 interface ProjectsFilterProps {
   activeFilter: FilterType;
@@ -12,7 +12,7 @@ export default function ProjectsFilter({ activeFilter, setActiveFilter }: Projec
     inactive: "text-[#8F721E] hover:text-accent"
   };
 
-  const filters: FilterType[] = ["All projects", "Personal", "Commissioned"];
+  const filters: FilterType[] = ["All projects", "Personal", "Ad-Film"];
 
   return (
     <div className="flex flex-wrap gap-6 mb-12">

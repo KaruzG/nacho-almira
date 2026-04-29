@@ -7,7 +7,6 @@ import ProjectCredits from "./ProjectCredits";
 import ProjectStills from "./ProjectStills";
 
 const ProjectSection = () => {
-
   const projectMock: Project = {
     id: 1,
     title: "caos - locked in",
@@ -25,11 +24,11 @@ const ProjectSection = () => {
       { role: "Artist", name: "Caos" },
     ],
     stills: [
-      { src: "https://res.cloudinary.com/dmfyvtezz/image/upload/v1777412194/Large_Feature_Still_xv0tae.png", alt: "Wide shot of the performance", orientation: "horizontal" },
-      { src: "https://res.cloudinary.com/dmfyvtezz/image/upload/v1777412194/Balanced_Bottom_Row_pnm6g6.png", alt: "Close up portrait", orientation: "square" },
-      { src: "https://res.cloudinary.com/dmfyvtezz/image/upload/v1777412194/Background_gaypta.png", alt: "Detail shot", orientation: "square" },
-      { src: "https://res.cloudinary.com/dmfyvtezz/image/upload/v1777412194/AB6AXU_1_b8mrj6.png", alt: "Behind the scenes", orientation: "square" },
-      { src: "https://res.cloudinary.com/dmfyvtezz/image/upload/v1777412194/Background-1_bcvk08.png", alt: "Cinematic wide angle", orientation: "square" },
+      { src: "https://res.cloudinary.com/dmfyvtezz/image/upload/v1777412194/Large_Feature_Still_xv0tae.png", alt: "Wide shot of the performance"},
+      { src: "https://res.cloudinary.com/dmfyvtezz/image/upload/v1777412194/Balanced_Bottom_Row_pnm6g6.png", alt: "Close up portrait" },
+      { src: "https://res.cloudinary.com/dmfyvtezz/image/upload/v1777412194/Background_gaypta.png", alt: "Detail shot" },
+      { src: "https://res.cloudinary.com/dmfyvtezz/image/upload/v1777412194/AB6AXU_1_b8mrj6.png", alt: "Behind the scenes" },
+      { src: "https://res.cloudinary.com/dmfyvtezz/image/upload/v1777412194/Background-1_bcvk08.png", alt: "Cinematic wide angle" },
     ],
   };
 

@@ -15,7 +15,6 @@ export interface ProjectCredit {
 export interface ProjectStill {
   src: string;
   alt: string;
-  orientation: "horizontal" | "square";
 }
 
 export interface Project {

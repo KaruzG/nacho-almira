@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { FiPlusCircle } from "react-icons/fi";
 import ProjectFormCredits from "@/components/admin/dashboard/ProjectFormCredits";
 import ProjectFormMedia from "@/components/admin/dashboard/ProjectFormMedia";
+import Select from "@/components/ui/Select";
 import { CategoryOption, ProjectData } from "@/types/admin";
 
 interface ProjectFormProps {
@@ -127,19 +128,16 @@ export default function ProjectForm({ categories, editingProject, onSaved, onCan
         <div className={inputStyles.row}>
           <div>
             <label className={inputStyles.label}>Category</label>
-            <select
+            <Select
               value={categoryId}
-              onChange={(e) => setCategoryId(e.target.value)}
-              className={inputStyles.select}
+              onChange={setCategoryId}
+              options={categories.map((cat) => ({
+                value: cat._id,
+                label: cat.name,
+              }))}
+              placeholder="Select category"
               required
-            >
-              <option value="" disabled>Select category</option>
-              {categories.map((cat) => (
-                <option key={cat._id} value={cat._id}>
-                  {cat.name}
-                </option>
-              ))}
-            </select>
+            />
           </div>
           <div>
             <label className={inputStyles.label}>Year</label>

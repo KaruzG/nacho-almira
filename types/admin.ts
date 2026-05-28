@@ -6,6 +6,7 @@ export interface CategoryOption {
 
 export interface ProjectData {
   _id: string;
+  type: "Personal" | "Ad-Film";
   title: string;
   category: CategoryOption;
   year: number;

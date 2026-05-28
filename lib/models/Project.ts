@@ -12,6 +12,7 @@ export interface IProjectMedia {
 }
 
 export interface IProject extends Document {
+  type: "Personal" | "Ad-Film";
   title: string;
   category: mongoose.Types.ObjectId;
   year: number;
@@ -27,6 +28,7 @@ export interface IProject extends Document {
 
 const ProjectSchema = new Schema<IProject>(
   {
+    type: { type: String, enum: ["Personal", "Ad-Film"], required: true, default: "Personal" },
     title: { type: String, required: true },
     category: { type: Schema.Types.ObjectId, ref: "Category", required: true },
     year: { type: Number, required: true },

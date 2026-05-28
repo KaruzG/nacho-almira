@@ -26,6 +26,7 @@ const cardStyles = "bg-primary-light border border-secondary-dark/10 rounded-xl 
 
 export default function ProjectForm({ categories, editingProject, onSaved, onCancel }: ProjectFormProps) {
   const [title, setTitle] = useState("");
+  const [type, setType] = useState<"Personal" | "Ad-Film">("Personal");
   const [categoryId, setCategoryId] = useState("");
   const [year, setYear] = useState(new Date().getFullYear());
   const [videoLink, setVideoLink] = useState("");
@@ -39,6 +40,7 @@ export default function ProjectForm({ categories, editingProject, onSaved, onCan
   useEffect(() => {
     if (editingProject) {
       setTitle(editingProject.title);
+      setType(editingProject.type || "Personal");
       setCategoryId(editingProject.category?._id || "");
       setYear(editingProject.year);
       setVideoLink(editingProject.videoLink);
@@ -54,6 +56,7 @@ export default function ProjectForm({ categories, editingProject, onSaved, onCan
 
   const resetForm = () => {
     setTitle("");
+    setType("Personal");
     setCategoryId("");
     setYear(new Date().getFullYear());
     setVideoLink("");
@@ -70,6 +73,7 @@ export default function ProjectForm({ categories, editingProject, onSaved, onCan
 
     const body = {
       title,
+      type,
       category: categoryId,
       year,
       videoLink,
@@ -125,9 +129,22 @@ export default function ProjectForm({ categories, editingProject, onSaved, onCan
           />
         </div>
 
-        <div className={inputStyles.row}>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div>
-            <label className={inputStyles.label}>Category</label>
+            <label className={inputStyles.label}>Type</label>
+            <Select
+              value={type}
+              onChange={(val) => setType(val as "Personal" | "Ad-Film")}
+              options={[
+                { value: "Personal", label: "Personal" },
+                { value: "Ad-Film", label: "Ad-Film" },
+              ]}
+              placeholder="Select type"
+              required
+            />
+          </div>
+          <div>
+            <label className={inputStyles.label}>Category / Tag</label>
             <Select
               value={categoryId}
               onChange={setCategoryId}
@@ -135,7 +152,7 @@ export default function ProjectForm({ categories, editingProject, onSaved, onCan
                 value: cat._id,
                 label: cat.name,
               }))}
-              placeholder="Select category"
+              placeholder="Select tag"
               required
             />
           </div>

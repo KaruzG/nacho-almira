@@ -7,8 +7,23 @@ import { v2 as cloudinary } from "cloudinary";
 const resolveSrv = promisify(dns.resolveSrv);
 const resolveTxt = promisify(dns.resolveTxt);
 
+interface HealthCheckResults {
+  timestamp: string;
+  mongodb: {
+    status: string;
+    dnsSrv: string;
+    dnsTxt: string;
+    error: string | null;
+    host?: string;
+  };
+  cloudinary: {
+    status: string;
+    error: string | null;
+  };
+}
+
 export async function GET() {
-  const results: any = {
+  const results: HealthCheckResults = {
     timestamp: new Date().toISOString(),
     mongodb: {
       status: "pending",
@@ -33,15 +48,17 @@ export async function GET() {
     try {
       const srvRecords = await resolveSrv(`_mongodb._tcp.${host}`);
       results.mongodb.dnsSrv = `Success: Found ${srvRecords.length} records`;
-    } catch (err: any) {
-      results.mongodb.dnsSrv = `Failed: ${err.message}`;
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : String(err);
+      results.mongodb.dnsSrv = `Failed: ${errorMessage}`;
     }
 
     try {
-      const txtRecords = await resolveTxt(`${host}`);
+      await resolveTxt(`${host}`);
       results.mongodb.dnsTxt = `Success: Found TXT records`;
-    } catch (err: any) {
-      results.mongodb.dnsTxt = `Failed: ${err.message}`;
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : String(err);
+      results.mongodb.dnsTxt = `Failed: ${errorMessage}`;
     }
   } else {
     results.mongodb.dnsSrv = "Skipped (Not an SRV connection string)";
@@ -56,9 +73,10 @@ export async function GET() {
       await mongoose.connect(uri, { serverSelectionTimeoutMS: 5000 });
       results.mongodb.status = "Connection successful";
     }
-  } catch (err: any) {
+  } catch (err) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
     results.mongodb.status = "Connection failed";
-    results.mongodb.error = err.message;
+    results.mongodb.error = errorMessage;
   }
 
   // 3. Test Cloudinary Configuration
@@ -72,9 +90,10 @@ export async function GET() {
     // Call the ping method using api object
     const pingResult = await cloudinary.api.ping();
     results.cloudinary.status = pingResult.status === "ok" ? "Connection successful" : "Ping returned non-ok status";
-  } catch (err: any) {
+  } catch (err) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
     results.cloudinary.status = "Connection failed";
-    results.cloudinary.error = err.message;
+    results.cloudinary.error = errorMessage;
   }
 
   return NextResponse.json(results, { status: 200 });

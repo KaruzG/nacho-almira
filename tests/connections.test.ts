@@ -32,8 +32,9 @@ describe("External Connections Integration Tests", () => {
       
       // readyState 1 significa que la conexión está abierta y activa
       expect(conn.connection.readyState).toBe(1);
-    } catch (error: any) {
-      throw new Error(`\n❌ Error de conexión a MongoDB: ${error.message}\n(Revisa si es 'bad auth' u otro problema de credenciales)`);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      throw new Error(`\n❌ Error de conexión a MongoDB: ${errorMessage}\n(Revisa si es 'bad auth' u otro problema de credenciales)`);
     }
   });
 
@@ -52,8 +53,9 @@ describe("External Connections Integration Tests", () => {
     try {
       const result = await cloudinary.api.ping();
       expect(result.status).toBe("ok");
-    } catch (error: any) {
-      throw new Error(`\n❌ Error de autenticación en Cloudinary: ${error.message}`);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      throw new Error(`\n❌ Error de autenticación en Cloudinary: ${errorMessage}`);
     }
   });
 

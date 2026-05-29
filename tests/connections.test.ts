@@ -1,14 +1,8 @@
-import { describe, it, expect, beforeAll, afterAll } from "vitest";
-import { loadEnvConfig } from "@next/env";
+import { describe, it, expect, afterAll } from "vitest";
 import mongoose from "mongoose";
 import { v2 as cloudinary } from "cloudinary";
 import dbConnect from "../lib/db/mongoose";
 
-// Cargamos el .env.local de Next.js antes de ejecutar los tests
-beforeAll(() => {
-  const projectDir = process.cwd();
-  loadEnvConfig(projectDir);
-});
 
 // Cerramos la conexión después de los tests para que el proceso no se quede colgado
 afterAll(async () => {

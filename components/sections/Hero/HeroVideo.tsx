@@ -2,9 +2,13 @@
 
 import { motion } from "motion/react";
 
-const HeroVideo = () => {
+interface HeroVideoProps {
+  videoUrl?: string;
+}
 
-  const videoUrl = "https://res.cloudinary.com/dmfyvtezz/video/upload/v1776817190/videoHero_k654bx.mp4";
+const HeroVideo = ({ videoUrl }: HeroVideoProps) => {
+  const defaultVideoUrl = "https://res.cloudinary.com/dmfyvtezz/video/upload/v1776817190/videoHero_k654bx.mp4";
+  const finalVideoUrl = videoUrl || defaultVideoUrl;
 
   return (
     <motion.div 
@@ -14,7 +18,7 @@ const HeroVideo = () => {
       transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1.0] }}
     >
       <video 
-        src={videoUrl} 
+        src={finalVideoUrl} 
         autoPlay 
         loop 
         muted 
@@ -22,7 +26,7 @@ const HeroVideo = () => {
         className="w-full h-full object-cover transition-transform duration-1000 ease-[cubic-bezier(0.25,0.1,0.25,1.0)] hover:scale-105"
       />
     </motion.div>
-  )
+  );
 };
 
 export default HeroVideo;

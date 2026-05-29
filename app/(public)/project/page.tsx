@@ -1,11 +1,5 @@
-import ProjectSection from "@/components/sections/Project/ProjectSection";
+import { redirect } from "next/navigation";
 
-const ProjectPage = () => {
-  return (
-    <>
-      <ProjectSection />
-    </>
-  )
-};
-
-export default ProjectPage;
+export default function ProjectPage() {
+  redirect("/projects");
+}

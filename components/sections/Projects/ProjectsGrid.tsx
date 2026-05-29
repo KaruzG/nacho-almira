@@ -40,7 +40,7 @@ export default function ProjectsGrid({ projects }: ProjectsGridProps) {
     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-16 lg:gap-y-24 lg:gap-x-12">
       {projects.map((project, index) => (
         <Suspense key={project.id} fallback={<ProjectSkeleton />}>
-          <Link href={`/project`}>
+          <Link href={`/project/${project.id}`}>
             <motion.div
               className="flex flex-col group cursor-pointer"
               initial={{ opacity: 0, y: 30 }}

@@ -6,41 +6,14 @@ import ProjectsGrid, { Project } from "./ProjectsGrid";
 
 import ProjectsFilter, { FilterType } from "./ProjectsFilter";
 
-const projectsMock: Project[] = [
-  {
-    id: 1,
-    title: "caos - locked in",
-    tag: "videoclip",
-    videoUrl: "https://res.cloudinary.com/dmfyvtezz/video/upload/v1776817190/videoHero_k654bx.mp4",
-    type: "Personal"
-  },
-  {
-    id: 2,
-    title: "Project Beta",
-    tag: "Art Direction",
-    videoUrl: "https://res.cloudinary.com/dmfyvtezz/video/upload/v1776817190/videoHero_k654bx.mp4",
-    type: "Ad-Film"
-  },
-  {
-    id: 3,
-    title: "Project Gamma",
-    tag: "3D Animation",
-    videoUrl: "https://res.cloudinary.com/dmfyvtezz/video/upload/v1776817190/videoHero_k654bx.mp4",
-    type: "Personal"
-  },
-  {
-    id: 4,
-    title: "Project Delta",
-    tag: "Web Experience",
-    videoUrl: "https://res.cloudinary.com/dmfyvtezz/video/upload/v1776817190/videoHero_k654bx.mp4",
-    type: "Ad-Film"
-  }
-];
+interface ProjectsProps {
+  initialProjects: Project[];
+}
 
-const Projects = () => {
+const Projects = ({ initialProjects }: ProjectsProps) => {
   const [activeFilter, setActiveFilter] = useState<FilterType>("All projects");
 
-  const filteredProjects = projectsMock.filter(project => {
+  const filteredProjects = initialProjects.filter(project => {
     if (activeFilter === "All projects") return true;
     return project.type === activeFilter;
   });

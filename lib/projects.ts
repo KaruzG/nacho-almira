@@ -11,7 +11,8 @@ export async function getPublishedProjects(): Promise<Project[]> {
 
   const dbProjects = await ProjectModel.find({ visibility: "published" })
     .populate("category")
-    .sort({ createdAt: -1 });
+    .sort({ createdAt: -1 })
+    .lean();
 
   return dbProjects.map((proj) => {
     const categoryName =

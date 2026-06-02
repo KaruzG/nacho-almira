@@ -3,6 +3,7 @@
 import { formatTime } from "@/lib/youtube";
 
 interface VideoControlsProps {
+  visible: boolean;
   playing: boolean;
   muted: boolean;
   volume: number;
@@ -20,11 +21,15 @@ const Vol = () => (<svg width="20" height="20" viewBox="0 0 24 24" fill="current
 const Mut = () => (<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3z" /><line x1="16" y1="8" x2="22" y2="14" stroke="currentColor" strokeWidth="2" /><line x1="22" y1="8" x2="16" y2="14" stroke="currentColor" strokeWidth="2" /></svg>);
 
 export default function VideoControls({
-  playing, muted, volume, current, duration,
+  visible, playing, muted, volume, current, duration,
   onTogglePlay, onToggleMute, onVolume, onSeek,
 }: VideoControlsProps) {
   return (
-    <div className="absolute z-20 bottom-0 left-0 right-0 p-4 md:p-6 bg-gradient-to-t from-primary/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+    <div
+      className={`absolute z-20 bottom-0 left-0 right-0 p-4 md:p-6 bg-gradient-to-t from-primary/80 to-transparent transition-opacity duration-300 ${
+        visible ? "opacity-100" : "opacity-0 pointer-events-none"
+      }`}
+    >
       <div className="flex items-center gap-3 text-secondary">
         <button onClick={onTogglePlay} aria-label="play/pause" className="shrink-0 hover:text-accent transition-colors">
           {playing ? <Pause /> : <Play />}

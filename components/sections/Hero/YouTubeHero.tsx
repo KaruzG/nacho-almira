@@ -2,17 +2,20 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useYouTubePlayer } from "@/hooks/useYouTubePlayer";
-import { useCoverSize } from "@/hooks/useCoverSize";
 import VideoControls from "@/components/ui/VideoControls";
 
 interface YouTubeHeroProps {
   videoId: string;
   videoAspect?: number;
-  overscan?: number;
+  /** Píxeles recortados arriba/abajo para esconder el chrome de YouTube. */
+  chromePad?: number;
 }
 
-export default function YouTubeHero({ videoId, videoAspect = 16 / 9, overscan = 1.3 }: YouTubeHeroProps) {
-  const { ref, size } = useCoverSize<HTMLDivElement>(videoAspect, overscan);
+export default function YouTubeHero({
+  videoId,
+  videoAspect = 16 / 9,
+  chromePad = 48,
+}: YouTubeHeroProps) {
   const { hostRef, state, actions } = useYouTubePlayer({ videoId });
 
   const [controlsVisible, setControlsVisible] = useState(true);
@@ -25,7 +28,7 @@ export default function YouTubeHero({ videoId, videoAspect = 16 / 9, overscan = 
   }, []);
 
   useEffect(() => {
-    reveal(); // se muestran al cargar y se ocultan solas
+    reveal();
     return () => {
       if (hideTimer.current) clearTimeout(hideTimer.current);
     };
@@ -33,20 +36,27 @@ export default function YouTubeHero({ videoId, videoAspect = 16 / 9, overscan = 
 
   return (
     <div
-      ref={ref}
       onMouseMove={reveal}
       onTouchStart={reveal}
-      className="group w-full h-full relative overflow-hidden bg-primary"
+      className="group relative w-full mx-auto overflow-hidden bg-primary"
+      style={{ aspectRatio: String(videoAspect) }}
     >
-      {/* El iframe NO recibe eventos: así YouTube nunca muestra sus controles */}
+      {/*
+        La CAJA tiene el aspecto real -> el layout no mete bandas.
+        El iframe se amplía SOLO chromePad px por lado (manteniendo aspecto),
+        así se recorta el título/barra de YouTube sin recortar apenas imagen
+        y sin que reaparezcan bandas internas.
+      */}
       <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none [&_iframe]:pointer-events-none"
-        style={{ width: size.w || "100%", height: size.h || "100%" }}
+        style={{
+          width: `calc(100% + ${chromePad * videoAspect * 2}px)`,
+          height: `calc(100% + ${chromePad * 2}px)`,
+        }}
       >
         <div ref={hostRef} className="w-full h-full" />
       </div>
 
-      {/* Capa que captura el toque: muestra TUS controles y bloquea el player */}
       <button
         type="button"
         aria-label="Mostrar controles"

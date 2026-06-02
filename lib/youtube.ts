@@ -42,3 +42,8 @@ export function formatTime(s: number): string {
   const sec = Math.floor(s % 60);
   return `${m}:${sec.toString().padStart(2, "0")}`;
 }
+
+export function getYouTubeAspect(url?: string): number {
+  if (url && /youtube\.com\/shorts\//.test(url)) return 9 / 16;
+  return 16 / 9;
+}

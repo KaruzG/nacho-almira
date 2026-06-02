@@ -26,7 +26,7 @@ export default function VideoControls({
 }: VideoControlsProps) {
   return (
     <div
-      className={`absolute z-20 bottom-0 left-0 right-0 p-4 md:p-6 bg-gradient-to-t from-primary/80 to-transparent transition-opacity duration-300 ${
+      className={`absolute z-20 bottom-0 left-0 right-0 p-4 md:p-6 bg-linear-to-t from-primary/80 to-transparent transition-opacity duration-300 ${
         visible ? "opacity-100" : "opacity-0 pointer-events-none"
       }`}
     >

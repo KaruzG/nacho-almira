@@ -23,6 +23,7 @@ export interface Project {
   title: string;
   tag: string;
   videoUrl: string;
+  trailerUrl?: string;
   type?: FilterType | string;
   shortDescription?: string;
   description?: string;
@@ -51,7 +52,11 @@ export default function ProjectsGrid({ projects }: ProjectsGridProps) {
                 delay: index * 0.15,
               }}
             >
-              <ProjectsTrailer videoUrl={project.videoUrl} />
+              <ProjectsTrailer 
+                trailerUrl={project.trailerUrl} 
+                fallbackImage={project.stills && project.stills.length > 0 ? project.stills[0].src : undefined}
+                title={project.title}
+              />
               <ProjectsSubtitle title={project.title} tag={`${project.type} / ${project.tag}`} />
             </motion.div>
           </Link>

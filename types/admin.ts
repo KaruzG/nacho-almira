@@ -11,6 +11,7 @@ export interface ProjectData {
   category: CategoryOption;
   year: number;
   videoLink: string;
+  trailerLink?: string;
   description?: string;
   media: { src: string; alt: string; publicId?: string }[];
   credits: { role: string; name: string }[];

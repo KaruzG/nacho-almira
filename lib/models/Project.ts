@@ -17,6 +17,7 @@ export interface IProject extends Document {
   category: mongoose.Types.ObjectId;
   year: number;
   videoLink: string;
+  trailerLink?: string;
   description?: string;
   media: IProjectMedia[];
   credits: IProjectCredit[];
@@ -33,6 +34,7 @@ const ProjectSchema = new Schema<IProject>(
     category: { type: Schema.Types.ObjectId, ref: "Category", required: true },
     year: { type: Number, required: true },
     videoLink: { type: String, required: true },
+    trailerLink: { type: String },
     description: { type: String },
     media: [{ src: String, alt: String, publicId: String }],
     credits: [{ role: String, name: String }],

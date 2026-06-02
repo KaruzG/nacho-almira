@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { FiPlusCircle } from "react-icons/fi";
+import { FiPlusCircle, FiX, FiUploadCloud } from "react-icons/fi";
 import ProjectFormCredits from "@/components/admin/dashboard/ProjectFormCredits";
 import ProjectFormMedia from "@/components/admin/dashboard/ProjectFormMedia";
 import Select from "@/components/ui/Select";
@@ -36,6 +36,8 @@ export default function ProjectForm({ categories, editingProject, onSaved, onCan
   const [credits, setCredits] = useState<{ role: string; name: string }[]>([]);
   const [media, setMedia] = useState<{ src: string; alt: string; publicId?: string }[]>([]);
   const [saving, setSaving] = useState(false);
+  const [trailerLink, setTrailerLink] = useState("");
+  const [uploadingTrailer, setUploadingTrailer] = useState(false);
 
   useEffect(() => {
     if (editingProject) {
@@ -44,6 +46,7 @@ export default function ProjectForm({ categories, editingProject, onSaved, onCan
       setCategoryId(editingProject.category?._id || "");
       setYear(editingProject.year);
       setVideoLink(editingProject.videoLink);
+      setTrailerLink(editingProject.trailerLink || "");
       setDescription(editingProject.description || "");
       setMediaLink(editingProject.mediaLink || "");
       setVisibility(editingProject.visibility);
@@ -60,6 +63,7 @@ export default function ProjectForm({ categories, editingProject, onSaved, onCan
     setCategoryId("");
     setYear(new Date().getFullYear());
     setVideoLink("");
+    setTrailerLink("");
     setDescription("");
     setMediaLink("");
     setVisibility("draft");
@@ -77,6 +81,7 @@ export default function ProjectForm({ categories, editingProject, onSaved, onCan
       category: categoryId,
       year,
       videoLink,
+      trailerLink: trailerLink || undefined,
       description: description || undefined,
       media,
       credits,
@@ -104,6 +109,33 @@ export default function ProjectForm({ categories, editingProject, onSaved, onCan
       console.error("Failed to save project:", error);
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleTrailerUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+    
+    setUploadingTrailer(true);
+    try {
+      console.log("Uploading Trailer...");
+      const file = files[0];
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) throw new Error("Upload failed");
+      const result = await res.json();
+      setTrailerLink(result.url);
+      console.log("Trailer Uploaded: ", result);
+    } catch (error) {
+      console.error("Failed to upload trailer video:", error);
+    } finally {
+      setUploadingTrailer(false);
     }
   };
 
@@ -178,6 +210,46 @@ export default function ProjectForm({ categories, editingProject, onSaved, onCan
             className={inputStyles.input}
             required
           />
+        </div>
+
+        <div>
+          <label className={inputStyles.label}>Trailer Video (Optional - Cloudinary)</label>
+          <div className="flex flex-col gap-3">
+            {trailerLink ? (
+              <div className="relative aspect-video w-full max-w-md rounded-lg overflow-hidden bg-secondary-dark/10 group border border-secondary-dark/15">
+                <video src={trailerLink} controls className="w-full h-full object-cover" />
+                <button
+                  type="button"
+                  onClick={() => setTrailerLink("")}
+                  className="absolute top-2 right-2 bg-primary/80 hover:bg-primary rounded-full p-2 transition-colors cursor-pointer"
+                >
+                  <FiX size={16} className="text-secondary" />
+                </button>
+              </div>
+            ) : (
+              <div className="flex items-center gap-4">
+                <label className="flex items-center gap-2 px-4 py-3 bg-secondary-dark/10 hover:bg-secondary-dark/20 text-secondary border border-secondary-dark/30 rounded-lg cursor-pointer transition-colors duration-200 text-xs font-bold tracking-wider uppercase">
+                  {uploadingTrailer ? (
+                    <FiUploadCloud size={16} className="text-accent animate-pulse" />
+                  ) : (
+                    "Upload Trailer Video"
+                  )}
+                  <span className="ml-1">{uploadingTrailer ? "Uploading..." : "Browse file"}</span>
+                  <input
+                    type="file"
+                    accept="video/*"
+                    onChange={handleTrailerUpload}
+                    disabled={uploadingTrailer}
+                    className="hidden"
+                  />
+                </label>
+                {uploadingTrailer && <span className="text-xs text-secondary-dark animate-pulse">Uploading to Cloudinary...</span>}
+              </div>
+            )}
+            <p className="text-[11px] text-secondary-dark/60 mt-1">
+              Upload a short video clip to be used as a hover preview on the projects grid. Max 10MB recommended.
+            </p>
+          </div>
         </div>
 
         <div>

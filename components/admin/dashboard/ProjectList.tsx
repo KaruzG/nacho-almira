@@ -1,7 +1,9 @@
 "use client";
 
+import { motion } from "motion/react";
 import ProjectListItem from "./ProjectListItem";
 import { ProjectData } from "@/types/admin";
+import { easeInUp } from "@/animations/easeInUp";
 
 interface ProjectListProps {
   projects: ProjectData[];
@@ -35,7 +37,7 @@ export default function ProjectList({ projects, loading, onEdit, onDelete }: Pro
           No projects yet. Create your first one!
         </p>
       ) : (
-        <div className="flex flex-col gap-3">
+        <motion.div {...easeInUp} className="flex flex-col gap-3">
           {projects.map((project) => (
             <ProjectListItem
               key={project._id}
@@ -44,7 +46,7 @@ export default function ProjectList({ projects, loading, onEdit, onDelete }: Pro
               onDelete={() => onDelete(project._id)}
             />
           ))}
-        </div>
+        </motion.div>
       )}
     </div>
   );

@@ -1,6 +1,8 @@
 "use client";
+import { motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { FiSettings } from "react-icons/fi";
+import { easeInUp } from "@/animations/easeInUp";
 
 export default function SettingsPage() {
   const styles = {
@@ -28,7 +30,9 @@ export default function SettingsPage() {
         <p className="text-[11px] font-bold tracking-[0.2em] uppercase text-accent mb-2">Project Management</p>
         <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-secondary">Settings</h1>
       </div>
-      <div className="bg-primary-light border border-secondary-dark/10 rounded-xl py-10 px-15 w-fit">
+      <motion.div 
+        {...easeInUp}
+        className="bg-primary-light border border-secondary-dark/10 rounded-xl py-10 px-10 max-w-md">
         <h2 className="text-sm font-bold tracking-[0.15em] uppercase text-secondary mb-6 flex items-center gap-2">
           <FiSettings className="text-accent" /> Server status
         </h2>
@@ -38,7 +42,7 @@ export default function SettingsPage() {
           <li className="flex flex-row justify-between"><label className={styles.label}>Auth SV:</label> <span className={styles.statusOnline}>  online</span></li>
           <li className="flex flex-row justify-between"><label className={styles.label}>MAIN SV:</label> <span className={styles.statusOnline}>  online</span></li>
         </ul>
-      </div>
+      </motion.div>
     </div>
   );
 }

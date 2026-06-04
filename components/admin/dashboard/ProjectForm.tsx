@@ -6,6 +6,8 @@ import ProjectFormCredits from "@/components/admin/dashboard/ProjectFormCredits"
 import ProjectFormMedia from "@/components/admin/dashboard/ProjectFormMedia";
 import Select from "@/components/ui/Select";
 import { CategoryOption, ProjectData } from "@/types/admin";
+import { easeInUp } from "@/animations/easeInUp";
+import { motion } from "motion/react";
 
 interface ProjectFormProps {
   categories: CategoryOption[];
@@ -140,7 +142,7 @@ export default function ProjectForm({ categories, editingProject, onSaved, onCan
   };
 
   return (
-    <div className={cardStyles}>
+    <motion.div {...easeInUp} className={cardStyles}>
       <div className="flex items-center gap-3 mb-8">
         <FiPlusCircle size={20} className="text-accent" />
         <h2 className="text-sm font-bold tracking-[0.15em] uppercase text-secondary">
@@ -327,6 +329,6 @@ export default function ProjectForm({ categories, editingProject, onSaved, onCan
           )}
         </div>
       </form>
-    </div>
+    </motion.div>
   );
 }

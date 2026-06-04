@@ -1,5 +1,7 @@
 "use client";
 
+import { easeInUp } from "@/animations/easeInUp";
+import { motion } from "motion/react";
 import { useState, useEffect } from "react";
 import { FiTrash2, FiPlusCircle } from "react-icons/fi";
 
@@ -68,7 +70,7 @@ export default function CategoriesManager() {
   };
 
   return (
-    <div className={styles.card}>
+    <motion.div {...easeInUp} className={styles.card}>
       <h2 className="text-sm font-bold tracking-[0.15em] uppercase text-secondary mb-6 flex items-center gap-2">
         <FiPlusCircle className="text-accent" /> Add Category
       </h2>
@@ -111,6 +113,6 @@ export default function CategoriesManager() {
           <p className="text-secondary-dark text-sm text-center py-4">No categories created yet.</p>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 }

@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/KaruzG/nacho-almira)
 
-## Getting Started
+# NACHO ALMIRA PORTFOLIO
 
-First, run the development server:
+The Nacho Almira portfolio is a high-performance web application built with Next.js 16 designed to showcase creative projects through a rich media experience. It features a public-facing gallery and a **secure administrative dashboard for content management.**
+
+## Installation
+
+Install the project with npm
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/KaruzG/nacho-almira.git
+cd nacho-almira
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Configuration
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+#### .ENV Configuration
+Use the .env.example file as a template for the needed variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```md
+# MONGO DB
+MONGODB_URI=""
 
-## Learn More
+# AUTH
+ADMIN_EMAIL=""
+AUTH_SECRET=""
+#   Google Auth
+AUTH_GOOGLE_ID=""
+AUTH_GOOGLE_SECRET=""
 
-To learn more about Next.js, take a look at the following resources:
+# CLOUDINARY
+CLOUDINARY_CLOUD_NAME=""
+CLOUDINARY_API_KEY=""
+CLOUDINARY_API_SECRET=""
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+This project is licensed under the [MIT License](LICENSE). You are free to use, modify, and distribute it.  
+**No warranty is provided. Use at your own risk.**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Screenshoots
+<img width="1896" height="911" alt="image" src="https://github.com/user-attachments/assets/72f1b548-f0ab-461e-8d31-d100ab4c56c2" />
+<img width="3098" height="5412" alt="nacho-almira vercel app_project_6a1c4cf3a19848a254c0beab (3)" src="https://github.com/user-attachments/assets/06094117-4db5-4dd5-89da-7c698341fd57" />
 
-## Deploy on Vercel
+<img width="1904" height="907" alt="image" src="https://github.com/user-attachments/assets/b765b736-f293-494d-b96c-4b2e678116ec" />
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

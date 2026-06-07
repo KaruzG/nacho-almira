@@ -16,8 +16,8 @@ export async function getPublishedProjects(): Promise<Project[]> {
 
   return dbProjects.map((proj) => {
     const categoryName =
-      proj.category && (proj.category as any).name
-        ? (proj.category as any).name
+      proj.category && (proj.category).name
+        ? (proj.category).name
         : "";
 
     return {
@@ -30,10 +30,10 @@ export async function getPublishedProjects(): Promise<Project[]> {
       description: proj.description || "",
       mediaLink: proj.mediaLink || "",
       credits: proj.credits
-        ? proj.credits.map((c: any) => ({ role: c.role, name: c.name }))
+        ? proj.credits.map((c: {role: string, name: string}) => ({ role: c.role, name: c.name }))
         : [],
       stills: proj.media
-        ? proj.media.map((m: any) => ({ src: m.src, alt: m.alt }))
+        ? proj.media.map((m: {src: string, alt: string}) => ({ src: m.src, alt: m.alt }))
         : [],
     };
   });
@@ -54,8 +54,8 @@ export async function getPublishedProjectById(id: string): Promise<Project | nul
     if (!proj) return null;
 
     const categoryName =
-      proj.category && (proj.category as any).name
-        ? (proj.category as any).name
+      proj.category && (proj.category).name
+        ? (proj.category).name
         : "";
 
     return {
@@ -68,10 +68,10 @@ export async function getPublishedProjectById(id: string): Promise<Project | nul
       description: proj.description || "",
       mediaLink: proj.mediaLink || "",
       credits: proj.credits
-        ? proj.credits.map((c: any) => ({ role: c.role, name: c.name }))
+        ? proj.credits.map((c: {role: string, name: string}) => ({ role: c.role, name: c.name }))
         : [],
       stills: proj.media
-        ? proj.media.map((m: any) => ({ src: m.src, alt: m.alt }))
+        ? proj.media.map((m: {src: string, alt: string}) => ({ src: m.src, alt: m.alt }))
         : [],
     };
   } catch (error) {

@@ -34,7 +34,6 @@ export default function Select({
   onChange,
   options,
   placeholder = "Select an option",
-  required = false,
 }: SelectProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [focusedIndex, setFocusedIndex] = useState(-1);
@@ -112,7 +111,6 @@ export default function Select({
         type="button"
         aria-haspopup="listbox"
         aria-expanded={isOpen}
-        aria-required={required}
         onClick={() => {
           setIsOpen((prev) => !prev);
           if (!isOpen && selectedOption) {

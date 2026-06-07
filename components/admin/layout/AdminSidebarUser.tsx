@@ -1,6 +1,7 @@
 "use client";
 
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import { FiUser } from "react-icons/fi";
 
 const styles = {
@@ -20,7 +21,7 @@ export default function AdminSidebarUser() {
       <div className={styles.wrapper}>
         <div className={styles.avatar}>
           {session?.user?.image ? (
-            <img
+            <Image
               src={session.user.image}
               alt={session.user.name || "User"}
               className="w-full h-full object-cover"

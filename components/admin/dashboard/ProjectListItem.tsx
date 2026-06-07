@@ -2,6 +2,7 @@
 
 import { FiEdit2, FiTrash2 } from "react-icons/fi";
 import { ProjectData } from "@/types/admin";
+import Image from "next/image";
 
 interface ProjectListItemProps {
   project: ProjectData;
@@ -33,7 +34,7 @@ export default function ProjectListItem({ project, onEdit, onDelete }: ProjectLi
     <div className={styles.card}>
       <div className={styles.thumbnail}>
         {thumbnailSrc ? (
-          <img
+          <Image
             src={thumbnailSrc}
             alt={project.title}
             className="w-full h-full object-cover"

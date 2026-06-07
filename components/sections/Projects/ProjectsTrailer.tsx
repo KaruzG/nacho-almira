@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 interface ProjectsTrailerProps {
   trailerUrl?: string;
   fallbackImage?: string;
@@ -20,7 +22,7 @@ export default function ProjectsTrailer({ trailerUrl, fallbackImage, title }: Pr
           className={mediaStyles}
         />
       ) : fallbackImage ? (
-        <img
+        <Image
           src={fallbackImage}
           alt={title}
           className={mediaStyles}

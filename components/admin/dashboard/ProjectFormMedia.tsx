@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useRef, useState } from "react";
 import { FiImage, FiX, FiUploadCloud } from "react-icons/fi";
 
@@ -108,7 +109,7 @@ export default function ProjectFormMedia({ media, setMedia }: ProjectFormMediaPr
         <div className={styles.grid}>
           {media.map((item, index) => (
             <div key={index} className={styles.thumbnail}>
-              <img
+              <Image
                 src={item.src}
                 alt={item.alt}
                 className="w-full h-full object-cover"

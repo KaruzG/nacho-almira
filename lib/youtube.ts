@@ -1,8 +1,38 @@
-/* eslint-disable  @typescript-eslint/no-explicit-any */
+// Explicit exported types for the YouTube iframe API surface we use.
+export type YTPlayer = {
+  getDuration: () => number;
+  getCurrentTime: () => number;
+  setVolume: (v: number) => void;
+  mute: () => void;
+  unMute: () => void;
+  pauseVideo: () => void;
+  playVideo: () => void;
+  seekTo: (seconds: number, allowSeekAhead?: boolean) => void;
+  destroy?: () => void;
+};
+
+export type YTPlayerEvent = {
+  target: YTPlayer;
+  data?: number;
+};
+
+export const YTPlayerState = {
+  UNSTARTED: -1,
+  ENDED: 0,
+  PLAYING: 1,
+  PAUSED: 2,
+  BUFFERING: 3,
+  CUED: 5,
+} as const;
+
+export type YTGlobal = {
+  Player: new (elementId: string | HTMLElement, options?: unknown) => YTPlayer;
+  PlayerState: typeof YTPlayerState;
+};
 
 declare global {
   interface Window {
-    YT: any;
+    YT?: YTGlobal;
     onYouTubeIframeAPIReady?: () => void;
   }
 }
@@ -15,10 +45,10 @@ export function getYouTubeId(url?: string): string | null {
   return m ? m[1] : null;
 }
 
-let apiPromise: Promise<any> | null = null;
+let apiPromise: Promise<Window["YT"] | undefined> | null = null;
 
-export function loadYouTubeAPI(): Promise<any> {
-  if (typeof window === "undefined") return Promise.reject("no window");
+export function loadYouTubeAPI(): Promise<Window["YT"] | undefined> {
+  if (typeof window === "undefined") return Promise.reject(new Error("no window"));
   if (window.YT?.Player) return Promise.resolve(window.YT);
   if (apiPromise) return apiPromise;
 
@@ -32,6 +62,7 @@ export function loadYouTubeAPI(): Promise<any> {
     const prev = window.onYouTubeIframeAPIReady;
     window.onYouTubeIframeAPIReady = () => {
       prev?.();
+      // window.YT will be available once the API is ready
       resolve(window.YT);
     };
   });

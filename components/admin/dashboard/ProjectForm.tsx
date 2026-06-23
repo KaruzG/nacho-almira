@@ -111,7 +111,7 @@ export default function ProjectForm({ categories, editingProject, onSaved, onCan
     setUploadingTrailer(true);
     try {
       const file = files[0];
-      const result: any = await uploadTrailer(file);
+      const result = await uploadTrailer(file);
       setTrailerLink(result.url);
     } catch (error) {
       console.error("Failed to upload trailer video:", error);

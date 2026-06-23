@@ -1,6 +1,10 @@
-/* eslint-disable  @typescript-eslint/no-explicit-any */
 import { useCallback, useEffect, useRef, useState } from "react";
-import { loadYouTubeAPI } from "@/lib/youtube";
+import {
+  loadYouTubeAPI,
+  YTPlayer,
+  YTPlayerEvent,
+  YTPlayerState,
+} from "@/lib/youtube";
 
 export function useYouTubePlayer({
   videoId,
@@ -10,7 +14,7 @@ export function useYouTubePlayer({
   loop?: boolean;
 }) {
   const hostRef = useRef<HTMLDivElement>(null);
-  const playerRef = useRef<any>(null);
+  const playerRef = useRef<YTPlayer | null>(null);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const [playing, setPlaying] = useState(true);
@@ -22,10 +26,11 @@ export function useYouTubePlayer({
   useEffect(() => {
     let destroyed = false;
 
-    loadYouTubeAPI().then((YT) => {
+    loadYouTubeAPI().then((yt) => {
       if (destroyed || !hostRef.current) return;
 
-      playerRef.current = new YT.Player(hostRef.current, {
+      if (!yt) return;
+      playerRef.current = new yt.Player(hostRef.current, {
         width: "100%",
         height: "100%",
         videoId,
@@ -41,7 +46,7 @@ export function useYouTubePlayer({
           iv_load_policy: 3,
         },
         events: {
-          onReady: (e: any) => {
+          onReady: (e: YTPlayerEvent) => {
             setDuration(e.target.getDuration());
             e.target.setVolume(volume);
             intervalRef.current = setInterval(() => {
@@ -56,9 +61,9 @@ export function useYouTubePlayer({
               if (loop && dur && cur >= dur - 6.2) p.seekTo(0, true);
             }, 200);
           },
-          onStateChange: (e: any) => {
-            setPlaying(e.data === YT.PlayerState.PLAYING);
-            if (loop && e.data === YT.PlayerState.ENDED) {
+          onStateChange: (e: YTPlayerEvent) => {
+            setPlaying(e.data === YTPlayerState.PLAYING);
+            if (loop && e.data === YTPlayerState.ENDED) {
               e.target.seekTo(0, true);
               e.target.playVideo();
             }
@@ -73,7 +78,6 @@ export function useYouTubePlayer({
       playerRef.current?.destroy?.();
       playerRef.current = null;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [videoId, loop]);
 
   const togglePlay = useCallback(() => {

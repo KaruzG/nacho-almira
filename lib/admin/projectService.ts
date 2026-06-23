@@ -45,7 +45,7 @@ export async function submitProject(
   fetchImpl: typeof fetch = fetch
 ) {
   const { url, options } = createRequestOptions(payload, editingId);
-  const res = await fetchImpl(url, options as any);
+  const res = await fetchImpl(url, options);
   return res;
 }
 
@@ -54,5 +54,5 @@ export async function uploadTrailer(file: File, fetchImpl: typeof fetch = fetch)
   formData.append("file", file);
   const res = await fetchImpl("/api/upload", { method: "POST", body: formData });
   if (!res.ok) throw new Error("Upload failed");
-  return res.json();
+  return (await res.json()) as { url: string };
 }

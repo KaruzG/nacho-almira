@@ -1,6 +1,6 @@
 import { describe, it, expect, afterAll } from "vitest";
 import { z } from "zod";
-import dbConnect from "../lib/db/mongoose";
+import dbConnect from "../../lib/db/mongoose";
 import mongoose from "mongoose";
 
 afterAll(async () => {

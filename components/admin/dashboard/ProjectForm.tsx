@@ -7,6 +7,7 @@ import ProjectFormMedia from "@/components/admin/dashboard/ProjectFormMedia";
 import Select from "@/components/ui/Select";
 import { CategoryOption, ProjectData } from "@/types/admin";
 import { easeInUp } from "@/animations/easeInUp";
+import { buildPayload, submitProject, uploadTrailer } from "@/lib/admin/projectService";
 import { motion } from "motion/react";
 
 interface ProjectFormProps {
@@ -76,34 +77,23 @@ export default function ProjectForm({ categories, editingProject, onSaved, onCan
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
-
-    const body = {
-      title,
-      type,
-      category: categoryId,
-      year,
-      videoLink,
-      trailerLink: trailerLink || undefined,
-      description: description || undefined,
-      media,
-      credits,
-      mediaLink: mediaLink || undefined,
-      visibility,
-    };
-
     try {
-      const url = editingProject
-        ? `/api/projects/${editingProject._id}`
-        : "/api/projects";
-      const method = editingProject ? "PUT" : "POST";
-
-      const res = await fetch(url, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
+      const payload = buildPayload({
+        title,
+        type,
+        category: categoryId,
+        year,
+        videoLink,
+        trailerLink: trailerLink || undefined,
+        description: description || undefined,
+        media,
+        credits,
+        mediaLink: mediaLink || undefined,
+        visibility,
       });
 
-      if (res.ok) {
+      const res = await submitProject(payload, editingProject?._id);
+      if (res && (res as Response).ok) {
         resetForm();
         onSaved();
       }
@@ -117,23 +107,12 @@ export default function ProjectForm({ categories, editingProject, onSaved, onCan
   const handleTrailerUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
-    
+
     setUploadingTrailer(true);
     try {
-      console.log("Uploading Trailer...");
       const file = files[0];
-      const formData = new FormData();
-      formData.append("file", file);
-
-      const res = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!res.ok) throw new Error("Upload failed");
-      const result = await res.json();
+      const result: any = await uploadTrailer(file);
       setTrailerLink(result.url);
-      console.log("Trailer Uploaded: ", result);
     } catch (error) {
       console.error("Failed to upload trailer video:", error);
     } finally {

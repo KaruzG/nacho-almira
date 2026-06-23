@@ -34,6 +34,6 @@
     "typescript": "^5",
     "vitest": "^4.0.18",
     "zod": "^4.4.3",
-    "@types/youtube": "^2.0.12"
+    
   }
 }

@@ -38,6 +38,8 @@ export default function ProjectListItem({ project, onEdit, onDelete }: ProjectLi
             src={thumbnailSrc}
             alt={project.title}
             className="w-full h-full object-cover"
+            height={100}
+            width={100}
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-secondary-dark/30 text-xs">

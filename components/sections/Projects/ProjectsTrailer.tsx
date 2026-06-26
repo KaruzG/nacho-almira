@@ -7,7 +7,7 @@ interface ProjectsTrailerProps {
 }
 
 export default function ProjectsTrailer({ trailerUrl, fallbackImage, title }: ProjectsTrailerProps) {
-  const containerStyles = "w-full aspect-video rounded-xl md:rounded-3xl overflow-hidden bg-gray-100 dark:bg-zinc-900 mb-3 md:mb-5 relative shadow-lg group-hover:shadow-xl transition-shadow duration-500";
+  const containerStyles = "w-full aspect-video overflow-hidden bg-gray-100 dark:bg-zinc-900 mb-3 md:mb-5 relative shadow-lg group-hover:shadow-xl transition-shadow duration-500";
   const mediaStyles = "w-full h-full object-cover transition-transform duration-1000 ease-[cubic-bezier(0.25,0.1,0.25,1.0)] group-hover:scale-105";
 
   return (
@@ -16,7 +16,7 @@ export default function ProjectsTrailer({ trailerUrl, fallbackImage, title }: Pr
         <video 
           src={trailerUrl} 
           autoPlay 
-          loop 
+          loop
           muted 
           playsInline 
           className={mediaStyles}
@@ -25,6 +25,7 @@ export default function ProjectsTrailer({ trailerUrl, fallbackImage, title }: Pr
         <Image
           src={fallbackImage}
           alt={title}
+          fill
           className={mediaStyles}
           loading="lazy"
         />

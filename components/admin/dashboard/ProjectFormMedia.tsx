@@ -112,6 +112,7 @@ export default function ProjectFormMedia({ media, setMedia }: ProjectFormMediaPr
               <Image
                 src={item.src}
                 alt={item.alt}
+                fill
                 className="w-full h-full object-cover"
               />
               <button

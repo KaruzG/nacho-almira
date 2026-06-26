@@ -25,6 +25,8 @@ export default function AdminSidebarUser() {
               src={session.user.image}
               alt={session.user.name || "User"}
               className="w-full h-full object-cover"
+              width={20}
+              height={20}
             />
           ) : (
             <FiUser size={16} className="text-secondary-dark" />

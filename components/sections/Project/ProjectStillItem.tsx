@@ -1,46 +1,26 @@
 "use client";
 
 import Image from "next/image";
-import { motion } from "motion/react";
-import { useImageOrientation } from "@/hooks/useImageOrientation";
+import { useState } from "react";
+import { isAnimatedImage } from "@/lib/media";
 import { ProjectStill } from "../Projects/ProjectsGrid";
 
-interface ProjectStillItemProps {
-  still: ProjectStill;
-  index: number;
-}
-
-export default function ProjectStillItem({ still, index }: ProjectStillItemProps) {
-  const orientation = useImageOrientation(still.src);
-  
-  // We wait until the orientation is detected to avoid grid layout shifts.
-  if (!orientation) return null;
-
-  const imageBaseStyles = "w-full h-full object-cover";
-
+export default function ProjectStillItem({ still }: { still: ProjectStill; index: number }) {
+  const [error, setError] = useState(false);
+  const [naturalAspect, setNaturalAspect] = useState(1);
+  const horizontal = still.width && still.height ? still.width > still.height : naturalAspect > 1;
   return (
-    <motion.div
-      className={`relative overflow-hidden w-full h-full ${
-        orientation === "horizontal"
-          ? "md:col-span-2"
-          : "md:col-span-1"
-      }`}
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6, delay: index * 0.1, ease: [0.25, 0.1, 0.25, 1.0] }}
-    >
-      <Image
-        src={still.src}
-        alt={still.alt}
-        fill
-        sizes={
-          orientation === "horizontal"
-            ? "(max-width: 768px) 100vw, 66vw"
-            : "(max-width: 768px) 100vw, 33vw"
-        }
-        className={imageBaseStyles}
-      />
-    </motion.div>
+    <div className={`relative w-full h-full ${horizontal ? "md:col-span-2" : "md:col-span-1"}`}>
+      {error ? <p role="status" className="p-4">Unable to load {still.alt || "media"}. <a href={still.src} className="underline">Open original</a></p> :
+        still.kind === "video" ? <video src={still.src} controls playsInline preload="metadata"
+          aria-label={still.alt || "Gallery video"} width={still.width} height={still.height}
+          onError={() => setError(true)} className="w-full h-full object-contain">
+          Your browser cannot play this MP4. <a href={still.src}>Open video</a>
+        </video> : <Image src={still.src} alt={still.alt} fill
+          unoptimized={isAnimatedImage(still)} onError={() => setError(true)}
+          onLoad={event => setNaturalAspect(event.currentTarget.naturalWidth / event.currentTarget.naturalHeight)}
+          sizes={horizontal ? "(max-width: 768px) 100vw, 66vw" : "(max-width: 768px) 100vw, 33vw"}
+          className="object-contain" />}
+    </div>
   );
 }

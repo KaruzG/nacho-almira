@@ -18,7 +18,9 @@ export function useImageOrientation(src: string) {
         setOrientation('square');
       }
     };
+    img.onerror = () => setOrientation('square');
     img.src = src;
+    return () => { img.onload = null; img.onerror = null; };
   }, [src]);
 
   return orientation;

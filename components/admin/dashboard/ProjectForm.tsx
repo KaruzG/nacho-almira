@@ -9,6 +9,8 @@ import { CategoryOption, ProjectData } from "@/types/admin";
 import { easeInUp } from "@/animations/easeInUp";
 import { buildPayload, submitProject, uploadTrailer } from "@/lib/admin/projectService";
 import { motion } from "motion/react";
+import { isHttpUrl, type MediaItem } from "@/lib/media";
+import { getYouTubeId } from "@/lib/youtube";
 
 interface ProjectFormProps {
   categories: CategoryOption[];
@@ -37,7 +39,11 @@ export default function ProjectForm({ categories, editingProject, onSaved, onCan
   const [mediaLink, setMediaLink] = useState("");
   const [visibility, setVisibility] = useState<"draft" | "published">("draft");
   const [credits, setCredits] = useState<{ role: string; name: string }[]>([]);
-  const [media, setMedia] = useState<{ src: string; alt: string; publicId?: string }[]>([]);
+  const [media, setMedia] = useState<MediaItem[]>([]);
+  const [videoWidth, setVideoWidth] = useState("");
+  const [videoHeight, setVideoHeight] = useState("");
+  const [error, setError] = useState("");
+  const [uploadingMedia, setUploadingMedia] = useState(false);
   const [saving, setSaving] = useState(false);
   const [trailerLink, setTrailerLink] = useState("");
   const [uploadingTrailer, setUploadingTrailer] = useState(false);
@@ -49,6 +55,8 @@ export default function ProjectForm({ categories, editingProject, onSaved, onCan
       setCategoryId(editingProject.category?._id || "");
       setYear(editingProject.year);
       setVideoLink(editingProject.videoLink);
+      setVideoWidth(editingProject.videoPresentation?.videoLink === editingProject.videoLink ? String(editingProject.videoPresentation.width) : "");
+      setVideoHeight(editingProject.videoPresentation?.videoLink === editingProject.videoLink ? String(editingProject.videoPresentation.height) : "");
       setTrailerLink(editingProject.trailerLink || "");
       setDescription(editingProject.description || "");
       setMediaLink(editingProject.mediaLink || "");
@@ -66,6 +74,8 @@ export default function ProjectForm({ categories, editingProject, onSaved, onCan
     setCategoryId("");
     setYear(new Date().getFullYear());
     setVideoLink("");
+    setVideoWidth("");
+    setVideoHeight("");
     setTrailerLink("");
     setDescription("");
     setMediaLink("");
@@ -76,14 +86,23 @@ export default function ProjectForm({ categories, editingProject, onSaved, onCan
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (uploadingMedia || uploadingTrailer || saving) return;
     setSaving(true);
+    setError("");
     try {
+      if (!getYouTubeId(videoLink) &&
+        !(editingProject?.videoLink === videoLink && isHttpUrl(videoLink))) {
+        throw new Error("Enter a valid YouTube URL for the main video.");
+      }
+      if ((videoWidth || videoHeight) && (!Number.isInteger(Number(videoWidth)) || !Number.isInteger(Number(videoHeight)) ||
+        Number(videoWidth) <= 0 || Number(videoHeight) <= 0)) throw new Error("Provide both positive original video dimensions.");
       const payload = buildPayload({
         title,
         type,
         category: categoryId,
         year,
         videoLink,
+        videoPresentation: videoWidth && videoHeight ? { width: Number(videoWidth), height: Number(videoHeight), source: "admin", videoLink } : null,
         trailerLink: trailerLink || undefined,
         description: description || undefined,
         media,
@@ -93,12 +112,13 @@ export default function ProjectForm({ categories, editingProject, onSaved, onCan
       });
 
       const res = await submitProject(payload, editingProject?._id);
+      if (!res.ok) throw new Error((await res.json()).error || "Unable to save the project.");
       if (res && (res as Response).ok) {
         resetForm();
         onSaved();
       }
     } catch (error) {
-      console.error("Failed to save project:", error);
+      setError((error as Error).message);
     } finally {
       setSaving(false);
     }
@@ -109,12 +129,13 @@ export default function ProjectForm({ categories, editingProject, onSaved, onCan
     if (!files || files.length === 0) return;
 
     setUploadingTrailer(true);
+    setError("");
     try {
       const file = files[0];
       const result = await uploadTrailer(file);
       setTrailerLink(result.url);
     } catch (error) {
-      console.error("Failed to upload trailer video:", error);
+      setError((error as Error).message);
     } finally {
       setUploadingTrailer(false);
     }
@@ -130,6 +151,7 @@ export default function ProjectForm({ categories, editingProject, onSaved, onCan
       </div>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+        {error && <p role="alert">{error}</p>}
         <div>
           <label className={inputStyles.label}>Project Title</label>
           <input
@@ -186,12 +208,21 @@ export default function ProjectForm({ categories, editingProject, onSaved, onCan
           <input
             type="url"
             value={videoLink}
-            onChange={(e) => setVideoLink(e.target.value)}
+            onChange={(e) => { setVideoLink(e.target.value); setVideoWidth(""); setVideoHeight(""); }}
             placeholder="https://youtube.com/..."
             className={inputStyles.input}
             required
           />
         </div>
+
+        <fieldset className="space-y-3">
+          <legend className={inputStyles.label}>Original video dimensions (manual)</legend>
+          <p className="text-xs text-secondary-dark">Read these from the original file, not its thumbnail. Required for home selection; changing the video clears them. Existing projects remain playable without this information.</p>
+          <div className="grid grid-cols-2 gap-6">
+            <label>Width (px)<input className={inputStyles.input} type="number" min="1" step="1" value={videoWidth} onChange={e => setVideoWidth(e.target.value)} /></label>
+            <label>Height (px)<input className={inputStyles.input} type="number" min="1" step="1" value={videoHeight} onChange={e => setVideoHeight(e.target.value)} /></label>
+          </div>
+        </fieldset>
 
         <div>
           <label className={inputStyles.label}>Trailer Video (Optional - Cloudinary)</label>
@@ -218,7 +249,7 @@ export default function ProjectForm({ categories, editingProject, onSaved, onCan
                   <span className="ml-1">{uploadingTrailer ? "Uploading..." : "Browse file"}</span>
                   <input
                     type="file"
-                    accept="video/*"
+                    accept="video/mp4"
                     onChange={handleTrailerUpload}
                     disabled={uploadingTrailer}
                     className="hidden"
@@ -228,7 +259,7 @@ export default function ProjectForm({ categories, editingProject, onSaved, onCan
               </div>
             )}
             <p className="text-[11px] text-secondary-dark/60 mt-1">
-              Upload a short video clip to be used as a hover preview on the projects grid. Max 10MB recommended.
+              Upload a short MP4 (H.264 video, AAC audio) for hover previews. Maximum 4,000,000 bytes. Touch devices show a static preview.
             </p>
           </div>
         </div>
@@ -255,7 +286,7 @@ export default function ProjectForm({ categories, editingProject, onSaved, onCan
         </div>
 
         <ProjectFormCredits credits={credits} setCredits={setCredits} />
-        <ProjectFormMedia media={media} setMedia={setMedia} />
+        <ProjectFormMedia media={media} setMedia={setMedia} onBusy={setUploadingMedia} />
 
         <div>
           <label className={inputStyles.label}>Visibility</label>
@@ -288,7 +319,7 @@ export default function ProjectForm({ categories, editingProject, onSaved, onCan
         <div className="flex gap-4 mt-4">
           <button
             type="submit"
-            disabled={saving}
+            disabled={saving || uploadingMedia || uploadingTrailer}
             className="flex-1 py-4 bg-accent text-accent-dark font-bold text-sm tracking-wider uppercase cursor-pointer hover:bg-accent/90 transition-colors duration-200 disabled:opacity-50"
           >
             {saving

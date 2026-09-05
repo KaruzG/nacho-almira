@@ -1,12 +1,14 @@
+import { validateFile, type MediaItem, type VideoPresentation } from "@/lib/media";
 export interface ProjectPayload {
   title: string;
   type: "Personal" | "Ad-Film";
   category: string;
   year: number;
   videoLink: string;
+  videoPresentation?: VideoPresentation | null;
   trailerLink?: string;
   description?: string;
-  media: { src: string; alt: string; publicId?: string }[];
+  media: MediaItem[];
   credits: { role: string; name: string }[];
   mediaLink?: string;
   visibility: "draft" | "published";
@@ -19,6 +21,7 @@ export function buildPayload(formState: Partial<ProjectPayload>): ProjectPayload
     category: String(formState.category || ""),
     year: Number(formState.year || new Date().getFullYear()),
     videoLink: String(formState.videoLink || ""),
+    videoPresentation: formState.videoPresentation ?? null,
     trailerLink: formState.trailerLink || undefined,
     description: formState.description || undefined,
     media: formState.media || [],
@@ -50,9 +53,10 @@ export async function submitProject(
 }
 
 export async function uploadTrailer(file: File, fetchImpl: typeof fetch = fetch) {
+  validateFile(file, true);
   const formData = new FormData();
   formData.append("file", file);
   const res = await fetchImpl("/api/upload", { method: "POST", body: formData });
-  if (!res.ok) throw new Error("Upload failed");
+  if (!res.ok) throw new Error((await res.json()).error || "Upload failed");
   return (await res.json()) as { url: string };
 }

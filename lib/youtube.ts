@@ -39,10 +39,15 @@ declare global {
 
 export function getYouTubeId(url?: string): string | null {
   if (!url) return null;
-  const m = url.match(
-    /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{11})/
-  );
-  return m ? m[1] : null;
+  try {
+    const parsed = new URL(url);
+    if (!["https:", "http:"].includes(parsed.protocol)) return null;
+    const host = parsed.hostname.replace(/^www\./, "");
+    const id = host === "youtu.be" ? parsed.pathname.slice(1) :
+      ["youtube.com", "m.youtube.com", "youtube-nocookie.com"].includes(host)
+        ? parsed.searchParams.get("v") || parsed.pathname.match(/^\/(?:embed|shorts)\/([\w-]+)\/?$/)?.[1] : null;
+    return id && /^[\w-]{11}$/.test(id) ? id : null;
+  } catch { return null; }
 }
 
 let apiPromise: Promise<Window["YT"] | undefined> | null = null;
@@ -76,7 +81,9 @@ export function formatTime(s: number): string {
   return `${m}:${sec.toString().padStart(2, "0")}`;
 }
 
-export function getYouTubeAspect(url?: string): number {
-  if (url && /youtube\.com\/shorts\//.test(url)) return 9 / 16;
-  return 16 / 9;
+export function getYouTubeAspect(presentation?: { width: number; height: number; source: string; videoLink: string } | null, videoLink?: string): number | undefined {
+  if (!presentation || presentation.source !== "admin" || presentation.videoLink !== videoLink ||
+    !Number.isFinite(presentation.width) || !Number.isFinite(presentation.height) ||
+    presentation.width <= 0 || presentation.height <= 0) return undefined;
+  return presentation.width / presentation.height;
 }

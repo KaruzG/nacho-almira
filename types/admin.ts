@@ -1,3 +1,4 @@
+import type { MediaItem, VideoPresentation } from "@/lib/media";
 export interface CategoryOption {
   _id: string;
   name: string;
@@ -11,9 +12,10 @@ export interface ProjectData {
   category: CategoryOption;
   year: number;
   videoLink: string;
+  videoPresentation?: VideoPresentation;
   trailerLink?: string;
   description?: string;
-  media: { src: string; alt: string; publicId?: string }[];
+  media: MediaItem[];
   credits: { role: string; name: string }[];
   mediaLink?: string;
   visibility: "draft" | "published";

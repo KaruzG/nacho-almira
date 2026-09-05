@@ -2,6 +2,12 @@ import dbConnect from "@/lib/db/mongoose";
 import ProjectModel from "@/lib/models/Project";
 import "@/lib/models/Category"; // Ensure Category schema is registered
 import { Project } from "@/components/sections/Projects/ProjectsGrid";
+import type { MediaItem } from "@/lib/media";
+
+function mapMedia(m: MediaItem): MediaItem {
+  return { src: m.src, alt: m.alt || "", publicId: m.publicId, kind: m.kind,
+    format: m.format, width: m.width, height: m.height, bytes: m.bytes, duration: m.duration, codec: m.codec };
+}
 
 /**
  * Fetch all published projects, mapped to the public Project interface.
@@ -25,6 +31,10 @@ export async function getPublishedProjects(): Promise<Project[]> {
       title: proj.title,
       tag: categoryName,
       videoUrl: proj.videoLink,
+      videoPresentation: proj.videoPresentation ? {
+        width: proj.videoPresentation.width, height: proj.videoPresentation.height,
+        source: proj.videoPresentation.source, videoLink: proj.videoPresentation.videoLink,
+      } : undefined,
       trailerUrl: proj.trailerLink || "",
       type: proj.type || "Personal",
       description: proj.description || "",
@@ -33,7 +43,7 @@ export async function getPublishedProjects(): Promise<Project[]> {
         ? proj.credits.map((c: {role: string, name: string}) => ({ role: c.role, name: c.name }))
         : [],
       stills: proj.media
-        ? proj.media.map((m: {src: string, alt: string}) => ({ src: m.src, alt: m.alt }))
+        ? proj.media.map(mapMedia)
         : [],
     };
   });
@@ -63,6 +73,10 @@ export async function getPublishedProjectById(id: string): Promise<Project | nul
       title: proj.title,
       tag: categoryName,
       videoUrl: proj.videoLink,
+      videoPresentation: proj.videoPresentation ? {
+        width: proj.videoPresentation.width, height: proj.videoPresentation.height,
+        source: proj.videoPresentation.source, videoLink: proj.videoPresentation.videoLink,
+      } : undefined,
       trailerUrl: proj.trailerLink || "",
       type: proj.type || "Personal",
       description: proj.description || "",
@@ -71,7 +85,7 @@ export async function getPublishedProjectById(id: string): Promise<Project | nul
         ? proj.credits.map((c: {role: string, name: string}) => ({ role: c.role, name: c.name }))
         : [],
       stills: proj.media
-        ? proj.media.map((m: {src: string, alt: string}) => ({ src: m.src, alt: m.alt }))
+        ? proj.media.map(mapMedia)
         : [],
     };
   } catch (error) {

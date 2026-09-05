@@ -1,20 +1,16 @@
 import { describe, it, expect } from "vitest";
 import { getYouTubeAspect } from "../../lib/youtube";
 
-describe("getYouTubeAspect", () => {
-  it("returns 16/9 when url is undefined", () => {
-    expect(getYouTubeAspect(undefined)).toBeCloseTo(16 / 9);
+describe("declared original video dimensions", () => {
+  it("does not infer dimensions from URLs, including Shorts", () => {
+    expect(getYouTubeAspect(undefined, "https://youtube.com/shorts/dQw4w9WgXcQ")).toBeUndefined();
   });
-
-  it("returns 16/9 for a standard watch url", () => {
-    expect(getYouTubeAspect("https://www.youtube.com/watch?v=dQw4w9WgXcQ")).toBeCloseTo(16 / 9);
+  it.each([[4, 3], [1, 1], [9, 16], [239, 100]])("preserves %s:%s", (width, height) => {
+    expect(getYouTubeAspect({ width, height, source: "admin", videoLink: "url" }, "url")).toBe(width / height);
   });
-
-  it("returns 16/9 for an embed url", () => {
-    expect(getYouTubeAspect("https://www.youtube.com/embed/dQw4w9WgXcQ")).toBeCloseTo(16 / 9);
-  });
-
-  it("returns 9/16 for a shorts url", () => {
-    expect(getYouTubeAspect("https://www.youtube.com/shorts/dQw4w9WgXcQ")).toBeCloseTo(9 / 16);
+  it("rejects stale and invalid metadata", () => {
+    expect(getYouTubeAspect({ width: 4, height: 3, source: "admin", videoLink: "old" }, "new")).toBeUndefined();
+    expect(getYouTubeAspect({ width: Infinity, height: 3, source: "admin", videoLink: "url" }, "url")).toBeUndefined();
+    expect(getYouTubeAspect({ width: 4, height: 0, source: "admin", videoLink: "url" }, "url")).toBeUndefined();
   });
 });

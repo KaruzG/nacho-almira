@@ -9,9 +9,11 @@ import {
 export function useYouTubePlayer({
   videoId,
   loop = true,
+  nativeControls = false,
 }: {
   videoId: string;
   loop?: boolean;
+  nativeControls?: boolean;
 }) {
   const hostRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<YTPlayer | null>(null);
@@ -30,19 +32,22 @@ export function useYouTubePlayer({
       if (destroyed || !hostRef.current) return;
 
       if (!yt) return;
-      playerRef.current = new yt.Player(hostRef.current, {
+      const mount = document.createElement("div");
+      hostRef.current.replaceChildren(mount);
+      playerRef.current = new yt.Player(mount, {
         width: "100%",
         height: "100%",
         videoId,
+        host: "https://www.youtube-nocookie.com",
         playerVars: {
           autoplay: 1,
           mute: 1,
-          controls: 0,
+          controls: nativeControls ? 1 : 0,
           rel: 0,
           modestbranding: 1,
           playsinline: 1,
-          disablekb: 1,
-          fs: 0,
+          disablekb: 0,
+          fs: 1,
           iv_load_policy: 3,
         },
         events: {
@@ -78,7 +83,7 @@ export function useYouTubePlayer({
       playerRef.current?.destroy?.();
       playerRef.current = null;
     };
-  }, [videoId, loop]);
+  }, [videoId, loop, nativeControls]);
 
   const togglePlay = useCallback(() => {
     const p = playerRef.current;

@@ -7,22 +7,21 @@ import ProjectsSubtitle from "./ProjectsSubtitle";
 import ProjectSkeleton from "./ProjectSkeleton";
 import Link from "next/link";
 import { FilterType } from "./ProjectsFilter";
+import { staticPoster, type MediaItem, type VideoPresentation } from "@/lib/media";
 
 export interface ProjectCredit {
   role: string;
   name: string;
 }
 
-export interface ProjectStill {
-  src: string;
-  alt: string;
-}
+export type ProjectStill = MediaItem;
 
 export interface Project {
   id: string | number;
   title: string;
   tag: string;
   videoUrl: string;
+  videoPresentation?: VideoPresentation;
   trailerUrl?: string;
   type?: FilterType | string;
   shortDescription?: string;
@@ -54,7 +53,7 @@ export default function ProjectsGrid({ projects }: ProjectsGridProps) {
             >
               <ProjectsTrailer 
                 trailerUrl={project.trailerUrl} 
-                fallbackImage={project.stills && project.stills.length > 0 ? project.stills[0].src : undefined}
+                fallbackImage={staticPoster(project.stills)}
                 title={project.title}
               />
               <ProjectsSubtitle title={project.title} tag={`${project.type} / ${project.tag}`} />

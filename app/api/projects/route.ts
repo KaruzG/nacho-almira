@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import dbConnect from "@/lib/db/mongoose";
 import Project from "@/lib/models/Project";
+import { validateProject } from "@/lib/projectValidation";
+import { InputError } from "@/lib/mediaServer";
 
 export async function GET() {
   try {
@@ -27,9 +29,10 @@ export async function POST(req: NextRequest) {
 
     await dbConnect();
     const body = await req.json();
-    const project = await Project.create(body);
+    const project = await Project.create(await validateProject(body));
     return NextResponse.json(project, { status: 201 });
   } catch (error) {
+    if (error instanceof InputError) return NextResponse.json({ error: error.message }, { status: 400 });
     return NextResponse.json(
       { error: "Failed to create project" },
       { status: 500 }

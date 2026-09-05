@@ -1,9 +1,12 @@
 import Hero from "@/components/sections/Hero/Hero";
+import { getHomeConfiguration } from "@/lib/home";
 
-export default function Home() {
+export const dynamic = "force-dynamic";
+export default async function Home() {
+  const { settings, projects } = await getHomeConfiguration();
   return (
     <main>
-      <Hero />
+      <Hero projects={projects} settings={settings} />
     </main>
   );
 }

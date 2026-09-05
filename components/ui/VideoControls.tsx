@@ -13,6 +13,8 @@ interface VideoControlsProps {
   onToggleMute: () => void;
   onVolume: (v: number) => void;
   onSeek: (t: number) => void;
+  fullscreen?: boolean;
+  onFullscreen?: () => void;
 }
 
 const Play = () => (<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>);
@@ -23,6 +25,7 @@ const Mut = () => (<svg width="20" height="20" viewBox="0 0 24 24" fill="current
 export default function VideoControls({
   visible, playing, muted, volume, current, duration,
   onTogglePlay, onToggleMute, onVolume, onSeek,
+  fullscreen, onFullscreen,
 }: VideoControlsProps) {
   return (
     <div
@@ -31,7 +34,7 @@ export default function VideoControls({
       }`}
     >
       <div className="flex items-center gap-3 text-secondary">
-        <button onClick={onTogglePlay} aria-label="play/pause" className="shrink-0 hover:text-accent transition-colors">
+        <button type="button" onClick={onTogglePlay} aria-label={playing ? "Pause video" : "Play video"} className="shrink-0 min-h-11 min-w-11 hover:text-accent transition-colors">
           {playing ? <Pause /> : <Play />}
         </button>
 
@@ -39,21 +42,26 @@ export default function VideoControls({
 
         <input
           type="range" min={0} max={duration || 0} step={0.1} value={current}
+          aria-label="Video position"
           onChange={(e) => onSeek(Number(e.target.value))}
-          className="flex-1 h-1 accent-accent cursor-pointer"
+          className="flex-1 min-w-0 h-1 accent-accent cursor-pointer"
         />
 
         <span className="text-xs tabular-nums w-10">{formatTime(duration)}</span>
 
-        <button onClick={onToggleMute} aria-label="mute" className="shrink-0 hover:text-accent transition-colors">
+        <button type="button" onClick={onToggleMute} aria-label={muted ? "Unmute video" : "Mute video"} className="shrink-0 min-h-11 hover:text-accent transition-colors">
           {muted || volume === 0 ? <Mut /> : <Vol />}
         </button>
 
         <input
           type="range" min={0} max={100} value={muted ? 0 : volume}
+          aria-label="Volume"
           onChange={(e) => onVolume(Number(e.target.value))}
           className="w-20 h-1 accent-accent cursor-pointer hidden md:block"
         />
+        {onFullscreen && <button type="button" onClick={onFullscreen}
+          aria-label={fullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+          className="shrink-0 min-h-11 min-w-11 hover:text-accent">⛶</button>}
       </div>
     </div>
   );

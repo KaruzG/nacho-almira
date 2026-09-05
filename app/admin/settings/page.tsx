@@ -3,6 +3,7 @@ import { motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { FiSettings } from "react-icons/fi";
 import { easeInUp } from "@/animations/easeInUp";
+import HomeSettings from "@/components/admin/HomeSettings";
 
 export default function SettingsPage() {
   const styles = {
@@ -30,6 +31,7 @@ export default function SettingsPage() {
         <p className="text-[11px] font-bold tracking-[0.2em] uppercase text-accent mb-2">Project Management</p>
         <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-secondary">Settings</h1>
       </div>
+      <HomeSettings />
       <motion.div 
         {...easeInUp}
         className="bg-primary-light border border-secondary-dark/10 rounded-xl py-10 px-10 max-w-md">
